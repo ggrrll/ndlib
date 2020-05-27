@@ -79,22 +79,23 @@ class SEIRModel(DiffusionModel):
                 if self.params['model']['tp_rate'] == 1:
                     if eventp < 1 - (1 - self.params['model']['beta']) ** len(infected_neighbors):
                         actual_status[u] = 2  # Exposed
-                        self.progress[u] =  self.actual_iteration # save time of exposure t_i
+                        self.progress[u] =  self.actual_iteration # save time of exposure t_e
                 else:
                     if eventp < self.params['model']['beta'] * triggered:
                         actual_status[u] = 2  # Exposed
-                        self.progress[u] =  self.actual_iteration # save time of exposure t_i
+                        self.progress[u] =  self.actual_iteration # save time of exposure t_e
 
             elif u_status == 2:
 
-                # apply prob. of infection, after (t - t_i) 
-                if eventp < 1 - np.exp(- (self.actual_iteration - self.progress[u]) / self.params['model']['alpha']): 
+                # apply prob. of infection, after (t - t_e) 
+                if eventp < 1 - np.exp(- (self.actual_iteration - self.progress[u]) * self.params['model']['alpha']): 
                     actual_status[u] = 1  # Infected
-                    del self.progress[u]
-
+                    self.progress[u] =  self.actual_iteration # save time of infection t_i
+                # apply prob. of recovery, after (t - t_i)
             elif u_status == 1:
-                if eventp < self.params['model']['gamma']:
+                if eventp < 1 - np.exp(- (self.actual_iteration - self.progress[u]) * self.params['model']['gamma']): 
                     actual_status[u] = 3  # Removed
+                    del self.status[u]
 
         delta, node_count, status_delta = self.status_delta(actual_status)
         self.status = actual_status
