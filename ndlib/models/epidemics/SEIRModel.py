@@ -23,7 +23,7 @@ class SEIRModel(DiffusionModel):
         self.parameters = {
             "model": {
                 "alpha": {
-                    "descr": "Latent period",
+                    "descr": "Inverse of latent period",
                     "range": [0, 1],
                     "optional": False},
                 "beta": {
