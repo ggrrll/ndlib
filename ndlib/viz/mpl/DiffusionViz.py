@@ -51,7 +51,7 @@ class DiffusionPlot(object):
         # infos = self.model.get_info()
         # descr = ""
 
-        plt.figure(figsize=(20, 10))
+        plt.figure()
 
         # for k, v in future.utils.iteritems(infos):
         #     descr += "%s: %s, " % (k, v)
@@ -76,9 +76,9 @@ class DiffusionPlot(object):
 
         plt.grid(axis="y")
         # plt.title(descr)
-        plt.xlabel("Iterations", fontsize=24)
-        plt.ylabel(self.ylabel, fontsize=24)
-        plt.legend(loc="best", fontsize=18)
+        plt.xlabel("Iterations", fontsize=16)
+        plt.ylabel(self.ylabel, fontsize=16)
+        plt.legend(loc="best", fontsize=16)
         plt.xlim((0, mx))
 
         plt.tight_layout()
